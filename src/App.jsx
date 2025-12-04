@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import InsertAllForms from "./components/InsertAllForms";
 import QueryPanelMain from "./Query";
 
-
 export default function App() {
   return (
     <Router>
