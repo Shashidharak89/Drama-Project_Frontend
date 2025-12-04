@@ -1,0 +1,70 @@
+/* CriticsActiveRenderer.css - prefixed car- (Critics Active Renderer) */
+
+.car-root { padding: 10px; box-sizing: border-box; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#0f1720; }
+.car-wrapper { padding: 12px; }
+
+.car-loading, .car-error, .car-empty { color:#374151; }
+.car-error { color:#b91c1c; }
+.car-empty { color:#6b7280; }
+
+/* Table wrap */
+.car-table-wrap { overflow:auto; border:1px solid #eef6ff; border-radius:10px; background:#fff; padding:8px; }
+
+/* Table */
+.car-table { width:100%; border-collapse: collapse; min-width:700px; font-size:14px; }
+.car-table thead th {
+  text-align:left;
+  padding:10px 12px;
+  background:#f8fbff;
+  border-bottom:1px solid #eef6ff;
+  font-weight:800;
+  color:#0b1220;
+  position: sticky;
+  top:0;
+  z-index:1;
+}
+.car-table tbody td {
+  padding:10px 12px;
+  border-bottom:1px solid #f3f7fb;
+  vertical-align: middle;
+}
+.car-row:hover td { background:#fbfdff; }
+
+/* critic cell */
+.car-critic-cell { width: 340px; }
+.car-critic-name { font-weight:800; font-size:15px; color:#0f1720; }
+.car-critic-id { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; color:#6b7280; font-size:12px; margin-top:4px; }
+
+/* centered cols */
+.car-center { text-align:center; font-weight:700; color:#0b1220; }
+
+/* reviews inline */
+.car-reviews-inline { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.car-review-pill { display:flex; gap:8px; align-items:center; background:#f8fafc; padding:6px 8px; border-radius:8px; border:1px solid #eef6ff; }
+.car-review-play { font-weight:700; color:#0b1220; }
+.car-review-score { background:#e6f6ff; padding:2px 6px; border-radius:999px; font-weight:800; color:#0c4a6e; }
+
+/* link button */
+.car-link-btn { background:none; border:none; color:#2563eb; font-weight:700; cursor:pointer; padding:6px; }
+
+/* actions */
+.car-actions-cell { text-align:center; width:140px; }
+.car-raw-btn { background:#2563eb; color:#fff; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:700; }
+.car-raw-btn:hover { background:#1e4fd1; }
+
+/* expanded row */
+.car-expanded-row td { background:#fbfdff; padding:12px; }
+.car-raw-block { background:#0f1720; color:#e6eef8; padding:12px; border-radius:8px; overflow:auto; }
+
+/* all reviews list */
+.car-all-reviews { padding:8px 0; }
+.car-reviews-list { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+.car-review-row { display:flex; justify-content:space-between; padding:8px; border-radius:8px; border:1px solid #eef6ff; background:#fff; }
+.car-review-play { color:#0b1220; font-weight:700; }
+.car-review-score { background:#e6f6ff; padding:4px 8px; border-radius:999px; font-weight:800; color:#0c4a6e; }
+
+/* small screens */
+@media (max-width: 900px) {
+  .car-table { min-width: 600px; }
+  .car-critic-cell { width: 260px; }
+}

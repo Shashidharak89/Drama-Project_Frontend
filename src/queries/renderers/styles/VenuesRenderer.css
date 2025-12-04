@@ -1,0 +1,45 @@
+/* VenuesRenderer.css - prefixed vr- (component name used as file) */
+
+.vr-wrapper { padding: 12px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#0f1720; }
+.vr-loading, .vr-error, .vr-empty { padding: 12px; color:#374151; }
+.vr-error { color:#b91c1c; }
+.vr-empty { color:#6b7280; }
+
+/* root & grid */
+.vr-root { padding: 8px; box-sizing: border-box; }
+.vr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+
+/* card */
+.vr-card { background:#fff; border:1px solid #e6eef8; border-radius:10px; overflow:hidden; box-shadow:0 6px 18px rgba(12,20,40,0.04); display:flex; flex-direction:column; }
+.vr-header { display:flex; justify-content:space-between; align-items:flex-start; padding:12px 14px; border-bottom:1px solid #f3f7fb; background:linear-gradient(180deg,#fff,#fbfdff); }
+.vr-title-block { display:flex; flex-direction:column; gap:6px; }
+.vr-title { margin:0; font-size:16px; font-weight:800; color:#0f1720; }
+.vr-sub { display:flex; gap:8px; align-items:center; }
+.vr-loc { font-size:13px; color:#475569; }
+.vr-count { background:#eef2ff; color:#0f1720; padding:4px 8px; border-radius:999px; font-weight:700; font-size:12px; }
+
+/* actions */
+.vr-actions { display:flex; gap:8px; align-items:center; }
+.vr-btn { background:#2563eb; color:#fff; border:none; padding:8px 10px; border-radius:8px; font-weight:700; cursor:pointer; }
+.vr-btn:hover { background:#1e4fd1; }
+
+/* body */
+.vr-body { padding:12px 14px; display:flex; flex-direction:column; gap:10px; }
+.vr-section { display:flex; flex-direction:column; gap:6px; }
+.vr-label { font-weight:800; font-size:12px; color:#0b1220; }
+.vr-value { font-size:13px; color:#334155; }
+
+/* plays list */
+.vr-play-list { margin:0; padding-left:16px; color:#475569; }
+.vr-play-list li { margin-bottom:6px; }
+
+/* empty */
+.vr-empty-val { color:#6b7280; }
+
+/* raw JSON */
+.vr-raw { padding:12px; background:#0f1720; color:#e6eef8; overflow:auto; }
+
+/* responsive */
+@media (max-width: 760px) {
+  .vr-grid { grid-template-columns: 1fr; }
+}
