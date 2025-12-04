@@ -1,0 +1,64 @@
+/* plays-renderer.css (for the sample response shape) - prefixed pr- */
+
+.pr-wrapper { padding: 12px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#0f1720; }
+.pr-loading, .pr-error, .pr-empty { padding: 12px; color:#374151; }
+.pr-error { color:#b91c1c; }
+
+.pr-root { padding: 8px; box-sizing: border-box; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#0f1720; }
+.pr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+
+/* Card */
+.pr-card { background: #fff; border: 1px solid #eef3fb; border-radius: 10px; overflow: hidden; display:flex; flex-direction:column; box-shadow: 0 6px 18px rgba(12,20,40,0.04); }
+.pr-header { display:flex; justify-content:space-between; align-items:flex-start; padding:12px 14px; border-bottom:1px solid #f6f9fc; background:linear-gradient(180deg,#fff,#fbfdff); }
+.pr-title-block { display:flex; flex-direction:column; gap:6px; }
+.pr-title { margin:0; font-size:16px; font-weight:800; color:#0f1720; }
+.pr-sub { display:flex; gap:8px; align-items:center; }
+.pr-lang, .pr-genre { font-weight:700; font-size:12px; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#0f1720; }
+.pr-genre { background:#fff7ed; color:#92400e; }
+
+/* Awards */
+.pr-awards { display:flex; gap:8px; align-items:center; }
+.pr-award { background:#fef3c7; color:#92400e; padding:6px 8px; border-radius:8px; font-weight:700; font-size:12px; border:1px solid #fbe6a9; }
+.pr-award-empty { background:#f8fafc; color:#6b7280; padding:6px 8px; border-radius:8px; font-size:12px; }
+
+/* Body */
+.pr-body { display:flex; gap:12px; padding:12px 14px; }
+.pr-left { flex:1; display:flex; flex-direction:column; gap:10px; }
+.pr-right { width:280px; display:flex; flex-direction:column; gap:10px; }
+
+/* Sections */
+.pr-section { display:flex; flex-direction:column; gap:6px; }
+.pr-label { font-weight:800; font-size:12px; color:#0b1220; }
+.pr-value { font-size:13px; color:#334155; }
+
+/* Actors / Venues */
+.pr-inline-list { list-style:none; margin:0; padding:0; display:flex; gap:8px; flex-wrap:wrap; }
+.pr-pill { background:#f8fafc; padding:6px 8px; border-radius:999px; border:1px solid #eef2ff; font-weight:700; font-size:13px; }
+
+.pr-venues { display:flex; flex-direction:column; gap:8px; }
+.pr-venue { background:#fff; border:1px solid #eef6ff; padding:8px; border-radius:8px; }
+.pr-venue-name { font-weight:700; }
+.pr-venue-loc { font-size:13px; color:#6b7280; }
+
+/* Ratings */
+.pr-ratings { display:flex; flex-direction:column; gap:8px; }
+.pr-rating-item { display:flex; justify-content:space-between; align-items:center; padding:8px; border-radius:8px; border:1px solid #eef6ff; background:#fff; }
+.pr-rating-critic { font-weight:700; color:#0b1220; }
+.pr-rating-score { font-weight:900; color:#0c4a6e; background:#e6f6ff; padding:4px 8px; border-radius:999px; }
+
+/* Footer and raw JSON */
+.pr-footer { display:flex; justify-content:flex-end; padding:8px 14px; border-top:1px solid #f6f9fc; background:#fafcff; }
+.pr-btn { background:#2563eb; color:#fff; border:none; padding:8px 10px; border-radius:8px; font-weight:700; cursor:pointer; }
+.pr-raw { padding:12px; background:#0b1220; color:#e6eef8; overflow:auto; }
+.pr-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; background:#0f1720; color:#e6eef8; padding:2px 6px; border-radius:6px; }
+
+/* Empty */
+.pr-empty { color:#6b7280; padding:12px; }
+.pr-empty-val { color:#6b7280; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pr-body { flex-direction:column; }
+  .pr-right { width:100%; }
+  .pr-grid { grid-template-columns: 1fr; }
+}

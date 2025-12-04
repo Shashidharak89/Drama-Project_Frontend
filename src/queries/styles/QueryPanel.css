@@ -1,0 +1,83 @@
+/* src/styles/QueryPanel.css */
+
+.qp-container {
+  display: flex;
+  gap: 16px;
+  height: calc(100vh - 120px);
+  padding: 12px;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color: #0f1720;
+}
+
+/* Left */
+.qp-left {
+  width: 320px;
+  background: #fff;
+  border: 1px solid #eef2ff;
+  border-radius: 10px;
+  padding: 12px;
+  overflow: auto;
+}
+.qp-title { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; }
+
+/* Query list */
+.ql-list { list-style: none; margin: 0; padding: 0; }
+.ql-item {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  background: #fbfdff;
+  border: 1px solid #f0f6ff;
+}
+.ql-item:hover { background: #f0f6ff; }
+.ql-active { background: #dbeafe; border-color: #bfdbfe; font-weight: 700; }
+
+/* Right */
+.qp-right {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #eef2ff;
+  border-radius: 10px;
+  padding: 12px;
+  overflow: auto;
+}
+
+/* Output */
+.qo-toolbar { margin-bottom: 8px; display:flex; justify-content:space-between; align-items:center; }
+.qo-body { background: #fbfdff; padding: 12px; border-radius: 8px; min-height: 200px; }
+
+/* generic */
+.qo-loading, .qo-error, .qo-empty { padding: 12px; color: #374151; }
+.qo-error { color: #b91c1c; }
+
+/* cards */
+.card {
+  border: 1px solid #e6eef8;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  background: white;
+}
+.card-header { font-weight: 800; display:flex; justify-content:space-between; align-items:center; }
+.card-header .chip { font-size: 12px; padding: 3px 8px; background:#eef2ff; border-radius:999px; color:#0f1720; font-weight:700; }
+.card-body { margin-top: 8px; color:#334155; }
+.list-col { display:flex; flex-direction:column; gap:8px; }
+
+/* plays grid */
+.plays-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+/* tables */
+.qp-table { width:100%; border-collapse: collapse; }
+.qp-table th, .qp-table td { border: 1px solid #eef2ff; padding: 8px; text-align:left; }
+.qp-table th { background: #f8fafc; }
+
+/* small monospace */
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size: 13px; color:#0b1220; }
+
+/* empty renderer */
+.renderer-empty { color:#6b7280; padding: 12px; }
+
+/* pre */
+.qo-pre { white-space: pre-wrap; background: #0f1720; color: #e6eef8; padding: 10px; border-radius: 6px; }

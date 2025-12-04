@@ -13,17 +13,23 @@ export default function InsertAllForms() {
     <div className="tf-insert-grid">
       <div className="tf-col">
         <PlayForm />
+        <br />
       </div>
 
       <div className="tf-col">
         <GroupForm />
+        <br />
         <VenueForm />
+        <br />
         <ActorForm />
+        <br />
       </div>
 
       <div className="tf-col">
         <CriticForm />
+        <br />
         <WorkshopForm />
+        <br />
       </div>
     </div>
   );
