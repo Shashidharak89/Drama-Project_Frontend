@@ -6,7 +6,7 @@ export default function GroupTopRenderer() {
   const [data, setData] = useState(null);
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState({}); // id -> bool
 
   useEffect(() => {
     let cancelled = false;
@@ -36,7 +36,7 @@ export default function GroupTopRenderer() {
           throw new Error(message);
         }
 
-        if (!cancelled) setData(payload);
+        if (!cancelled) setData(Array.isArray(payload) ? payload : (payload ? [payload] : []));
       } catch (e) {
         if (!cancelled) setErr(e.message || String(e));
       } finally {
@@ -50,64 +50,79 @@ export default function GroupTopRenderer() {
     };
   }, []);
 
+  function toggle(id) {
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function getPlayLabels(plays) {
+    if (!plays) return [];
+    if (!Array.isArray(plays)) return [String(plays)];
+    return plays.map(p => (typeof p === 'string' ? p : (p.name || p.title || p._id || p.id || '—')));
+  }
+
   // UI States
-  if (loading)
-    return <div className="gt-wrapper">Loading top group…</div>;
-
-  if (err)
-    return <div className="gt-wrapper gt-error">Error: {err}</div>;
-
-  if (!data)
-    return <div className="gt-wrapper gt-empty">No data found.</div>;
-
-  // Assume backend returns object or array
-  const d = Array.isArray(data) ? data[0] : data;
-
-  const groupName = d.name || "Unknown Group";
-  const playCount = d.playCount ?? (Array.isArray(d.plays) ? d.plays.length : "—");
+  if (loading) return <div className="gtt-wrapper">Loading top group…</div>;
+  if (err) return <div className="gtt-wrapper gtt-error">Error: {err}</div>;
+  if (!data || data.length === 0) return <div className="gtt-wrapper gtt-empty">No data found.</div>;
 
   return (
-    <div className="gt-root">
-      <div className="gt-card">
-        <header className="gt-header">
-          <h2 className="gt-title">{groupName}</h2>
-          <div className="gt-subtitle">Top Theatre Group</div>
-        </header>
+    <div className="gtt-root">
+      <div className="gtt-table-wrap">
+        <table className="gtt-table" role="table" aria-label="Top theatre groups">
+          <thead>
+            <tr>
+              <th>Group</th>
+              <th className="gtt-center">Play Count</th>
+              <th>Plays (examples)</th>
+              <th className="gtt-actions">Actions</th>
+            </tr>
+          </thead>
 
-        <section className="gt-body">
-          <div className="gt-row">
-            <div className="gt-label">Play Count</div>
-            <div className="gt-value">{playCount}</div>
-          </div>
+          <tbody>
+            {data.map((d, idx) => {
+              const id = d._id || d.id || `group-${idx}`;
+              const name = d.name || 'Unknown Group';
+              const plays = Array.isArray(d.plays) ? d.plays : [];
+              const playCount = d.playCount ?? (Array.isArray(d.plays) ? d.plays.length : (d.count ?? '—'));
+              const examples = getPlayLabels(plays).slice(0, 4);
 
-          {Array.isArray(d.plays) && d.plays.length > 0 && (
-            <div className="gt-row">
-              <div className="gt-label">Plays</div>
-              <div className="gt-value">
-                <ul className="gt-list">
-                  {d.plays.map((p) => (
-                    <li key={p._id || p}>{p.name || p}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-        </section>
+              return (
+                <React.Fragment key={id}>
+                  <tr className="gtt-row">
+                    <td className="gtt-group-cell">
+                      <div className="gtt-name">{name}</div>
+                      <div className="gtt-id">{id}</div>
+                    </td>
 
-        <footer className="gt-footer">
-          <button
-            className="gt-btn"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? "Hide JSON" : "Show raw JSON"}
-          </button>
-        </footer>
+                    <td className="gtt-center">{Number.isFinite(playCount) ? playCount : playCount}</td>
 
-        {expanded && (
-          <div className="gt-raw">
-            <pre>{JSON.stringify(d, null, 2)}</pre>
-          </div>
-        )}
+                    <td>
+                      {examples.length ? (
+                        <ul className="gtt-play-list">
+                          {examples.map((pname, i) => <li key={i}>{pname}</li>)}
+                        </ul>
+                      ) : <span className="gtt-empty-val">No plays listed</span>}
+                    </td>
+
+                    <td className="gtt-actions">
+                      <button className="gtt-btn" onClick={() => toggle(id)}>
+                        {expanded[id] ? 'Hide JSON' : 'Show raw JSON'}
+                      </button>
+                    </td>
+                  </tr>
+
+                  {expanded[id] && (
+                    <tr className="gtt-expanded">
+                      <td colSpan={4}>
+                        <div className="gtt-raw"><pre>{JSON.stringify(d, null, 2)}</pre></div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

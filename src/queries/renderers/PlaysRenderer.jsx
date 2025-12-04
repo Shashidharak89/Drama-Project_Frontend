@@ -6,7 +6,7 @@ export default function PlaysRenderer() {
   const [data, setData] = useState(null);      // array or null
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
-  const [expandedId, setExpandedId] = useState(null);
+  const [expanded, setExpanded] = useState({}); // id -> bool
 
   useEffect(() => {
     let cancelled = false;
@@ -29,7 +29,7 @@ export default function PlaysRenderer() {
           throw new Error(message || `Request failed ${res.status}`);
         }
 
-        if (!cancelled) setData(payload);
+        if (!cancelled) setData(Array.isArray(payload) ? payload : (payload ? [payload] : []));
       } catch (e) {
         if (!cancelled) setErr(e.message || String(e));
       } finally {
@@ -41,128 +41,108 @@ export default function PlaysRenderer() {
     return () => { cancelled = true; };
   }, []); // run once on mount
 
-  // render states
+  function toggle(id) {
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function extractNames(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map(x => (x && (x.name || x.title || x)) || '').filter(Boolean);
+  }
+
+  function calcAvg(ratings) {
+    if (!Array.isArray(ratings) || ratings.length === 0) return '—';
+    const nums = ratings.map(r => (typeof r.score === 'number' ? r.score : (r && r.score != null ? Number(r.score) : NaN))).filter(n => !Number.isNaN(n));
+    if (nums.length === 0) return '—';
+    const sum = nums.reduce((a,b) => a + b, 0);
+    return (sum / nums.length).toFixed(2);
+  }
+
   if (loading) return <div className="pr-wrapper"><div className="pr-loading">Loading plays…</div></div>;
   if (err) return <div className="pr-wrapper"><div className="pr-error">Error: {err}</div></div>;
-  if (!data || (Array.isArray(data) && data.length === 0)) return <div className="pr-wrapper"><div className="pr-empty">No Kannada plays found.</div></div>;
-
-  const list = Array.isArray(data) ? data : [data];
+  if (!data || data.length === 0) return <div className="pr-wrapper"><div className="pr-empty">No Kannada plays found.</div></div>;
 
   return (
-    <div className="pr-root">
-      <div className="pr-grid">
-        {list.map((p) => {
-          const id = p._id || p.id || Math.random().toString(36).slice(2, 9);
-          const name = p.name || 'Untitled Play';
-          const language = p.language || '—';
-          const genre = p.genre || '—';
-          const theatreGroup = (p.theatreGroup && (p.theatreGroup.name || p.theatreGroup)) || '—';
-          const awards = Array.isArray(p.awards) ? p.awards : (p.awards ? [p.awards] : []);
-          const venues = Array.isArray(p.venues) ? p.venues : [];
-          const actors = Array.isArray(p.actors) ? p.actors : [];
-          const ratings = Array.isArray(p.ratings) ? p.ratings : [];
+    <div className="prt-root">
+      <div className="prt-table-wrap">
+        <table className="prt-table" role="table" aria-label="Kannada plays">
+          <thead>
+            <tr>
+              <th>Play</th>
+              <th>Language</th>
+              <th>Genre</th>
+              <th>Theatre Group</th>
+              <th>Venues</th>
+              <th>Actors</th>
+              <th>Awards</th>
+              <th className="prt-center">Avg Rating</th>
+              <th className="prt-actions">Actions</th>
+            </tr>
+          </thead>
 
-          return (
-            <article className="pr-card" key={id}>
-              <header className="pr-header">
-                <div className="pr-title-block">
-                  <h3 className="pr-title">{name}</h3>
-                  <div className="pr-sub">
-                    <span className="pr-lang">{language}</span>
-                    <span className="pr-genre">{genre}</span>
-                  </div>
-                </div>
+          <tbody>
+            {data.map((p, idx) => {
+              const id = p._id || p.id || `play-${idx}`;
+              const name = p.name || p.title || 'Untitled Play';
+              const language = p.language || p.lang || '—';
+              const genre = p.genre || '—';
+              const group = (p.theatreGroup && (p.theatreGroup.name || p.theatreGroup)) || (p.theatreGroup ?? '—');
+              const venues = extractNames(p.venues);
+              const actors = extractNames(p.actors);
+              const awards = Array.isArray(p.awards) ? p.awards : (p.awards ? [p.awards] : []);
+              const avg = calcAvg(p.ratings);
 
-                <div className="pr-awards">
-                  {awards.length
-                    ? awards.map((a, i) => <span className="pr-award" key={i}>{a}</span>)
-                    : <span className="pr-award pr-award-empty">No awards</span>}
-                </div>
-              </header>
+              return (
+                <React.Fragment key={id}>
+                  <tr className="prt-row">
+                    <td className="prt-play-cell">
+                      <div className="prt-play-name">{name}</div>
+                      <div className="prt-play-id">{id}</div>
+                    </td>
 
-              <div className="pr-body">
-                <div className="pr-left">
-                  <div className="pr-section">
-                    <div className="pr-label">Theatre Group</div>
-                    <div className="pr-value">{theatreGroup}</div>
-                  </div>
+                    <td className="prt-small">{language}</td>
+                    <td className="prt-small">{genre}</td>
+                    <td>{group}</td>
 
-                  <div className="pr-section">
-                    <div className="pr-label">Actors</div>
-                    <div className="pr-value">
-                      {actors.length ? (
-                        <ul className="pr-inline-list">
-                          {actors.map(a => (
-                            <li key={a._id || a} className="pr-pill">{a.name || a}</li>
-                          ))}
-                        </ul>
-                      ) : <span className="pr-empty-val">—</span>}
-                    </div>
-                  </div>
-
-                  <div className="pr-section">
-                    <div className="pr-label">Venues</div>
-                    <div className="pr-value pr-venues">
+                    <td>
                       {venues.length ? (
-                        venues.map(v => (
-                          <div key={v._id || v} className="pr-venue">
-                            <div className="pr-venue-name">{v.name || v}</div>
-                            {v.location && <div className="pr-venue-loc">{v.location}</div>}
-                          </div>
-                        ))
-                      ) : <span className="pr-empty-val">—</span>}
-                    </div>
-                  </div>
-                </div>
+                        <ul className="prt-inline-list">
+                          {venues.map((v, i) => <li key={i}>{v}</li>)}
+                        </ul>
+                      ) : <span className="prt-empty-val">—</span>}
+                    </td>
 
-                <div className="pr-right">
-                  <div className="pr-section">
-                    <div className="pr-label">Ratings</div>
-                    <div className="pr-value">
-                      {ratings.length ? (
-                        <div className="pr-ratings">
-                          {ratings.map(r => {
-                            const critic = (r.critic && (r.critic.name || r.critic)) || (r.critic || 'critic');
-                            return (
-                              <div key={r._id || critic} className="pr-rating-item">
-                                <div className="pr-rating-critic">{critic}</div>
-                                <div className="pr-rating-score">{typeof r.score !== 'undefined' ? r.score : '—'}</div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : <span className="pr-empty-val">No ratings</span>}
-                    </div>
-                  </div>
+                    <td>
+                      {actors.length ? (
+                        <ul className="prt-inline-list">
+                          {actors.map((a, i) => <li key={i}>{a}</li>)}
+                        </ul>
+                      ) : <span className="prt-empty-val">—</span>}
+                    </td>
 
-                  <div className="pr-section">
-                    <div className="pr-label">Meta</div>
-                    <div className="pr-value">
-                      <div className="pr-meta-row"><strong>ID:</strong> <code className="pr-code">{id}</code></div>
-                      <div className="pr-meta-row"><strong>Version:</strong> {typeof p.__v !== 'undefined' ? p.__v : '—'}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <td>{awards.length ? awards.join(' • ') : '—'}</td>
 
-              <footer className="pr-footer">
-                <button
-                  className="pr-btn"
-                  onClick={() => setExpandedId(expandedId === id ? null : id)}
-                  aria-expanded={expandedId === id}
-                >
-                  {expandedId === id ? 'Hide JSON' : 'Show raw JSON'}
-                </button>
-              </footer>
+                    <td className="prt-center">{avg}</td>
 
-              {expandedId === id && (
-                <div className="pr-raw">
-                  <pre>{JSON.stringify(p, null, 2)}</pre>
-                </div>
-              )}
-            </article>
-          );
-        })}
+                    <td className="prt-actions">
+                      <button className="prt-btn" onClick={() => toggle(id)}>
+                        {expanded[id] ? 'Hide JSON' : 'Show JSON'}
+                      </button>
+                    </td>
+                  </tr>
+
+                  {expanded[id] && (
+                    <tr className="prt-expanded">
+                      <td colSpan={9}>
+                        <div className="prt-raw"><pre>{JSON.stringify(p, null, 2)}</pre></div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
