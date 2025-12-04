@@ -1,0 +1,97 @@
+/* src/styles/InsertForms.css - small, reusable styles for the insert forms */
+
+.tf-insert-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px 380px;
+  gap: 16px;
+  padding: 12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color: #111827;
+}
+
+/* each form card */
+.tf-form {
+  background: #ffffff;
+  border: 1px solid #e6eef8;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(12,20,40,0.04);
+  margin-bottom: 12px;
+}
+
+.tf-form-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f1720;
+}
+
+.tf-label {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #0b1220;
+}
+
+.tf-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #e6eef8;
+  font-size: 13px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.tf-actions {
+  margin-top: 10px;
+  display:flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tf-button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.tf-button:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.tf-status {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.tf-ok { background: #ecfdf5; color: #065f46; border: 1px solid #bbf7d0; }
+.tf-err { background: #fff1f2; color: #9f1239; border: 1px solid #fecaca; }
+
+.tf-data {
+  margin-top: 8px;
+  background: #0f1720;
+  color: #e6eef8;
+  padding: 8px;
+  border-radius: 6px;
+  overflow: auto;
+  max-height: 220px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  font-size: 12px;
+}
+
+/* column helper */
+.tf-col > .tf-form { margin-bottom: 12px; }
+
+/* responsive */
+@media (max-width: 980px) {
+  .tf-insert-grid {
+    grid-template-columns: 1fr;
+  }
+}
